@@ -1,0 +1,16 @@
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    padding:  0.8em 3em;
+  }
+
+  .table-container{
+    padding-top:2em;
+  }
+
+  .page-content{
+    padding-top: 10px;
+  }

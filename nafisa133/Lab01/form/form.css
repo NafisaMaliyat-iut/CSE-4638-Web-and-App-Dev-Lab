@@ -1,0 +1,11 @@
+.form-item{
+    padding:.6em;
+}
+
+.form-item label{
+    margin-right: 5px;
+}
+
+.form-buttons{
+    padding: .6em;
+}

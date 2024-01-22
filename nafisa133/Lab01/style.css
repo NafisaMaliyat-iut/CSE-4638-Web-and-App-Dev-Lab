@@ -1,0 +1,37 @@
+*{
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.grid {
+  display: grid;
+  column-gap: 50px;
+  grid-template-columns: 1fr 4fr;
+  justify-content: center;
+  height: calc(100vh - 80px);
+}
+
+.navbar {
+  grid-column-start: 1;
+  grid-column-end: 1;
+  font-size: large;
+}
+
+a {
+  color: black;
+}
+
+.header {
+  font-weight: bold;
+  grid-column-start: 2;
+  grid-column-end: 3;
+}
+
+footer {
+  text-align: center;
+  padding: 2em;
+}
+
+.footer-text {
+  font-size: 1em;
+  font-weight: bold;
+}
