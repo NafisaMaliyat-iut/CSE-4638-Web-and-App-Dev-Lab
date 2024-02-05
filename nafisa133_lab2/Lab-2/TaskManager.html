@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+  <title>Web development Lab</title>
+  <link rel="stylesheet" type="text/css" href="TaskManager.css" />
+</head>
+
+<body>
+  <h2>Task Manager</h2>
+  <div id="navButtons">
+    <button id="prevWeekBtn">&#60;</button>
+    <div id="currentWeek"></div>
+    <button id="nextWeekBtn">&#62;</button>
+  </div>
+  <div id="taskManager"></div>
+  <div id="taskDetailsDiv"></div>
+
+  <script type="text/javascript" src="TaskManager.js"></script>
+  <script type="text/javascript">
+    function getRandomIntInclusive(min, max) {
+      const minCeiled = Math.ceil(min);
+      const maxFloored = Math.floor(max);
+      return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
+    }
+
+    function generateTasks() {
+      let tasks = [];
+      for (let i = -10; i < 10; i++) {
+        var currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() + i);
+        for (let j = 0; j < getRandomIntInclusive(1, 5); j++) {
+          const task = {
+            name: "Task" + Math.floor(Math.random() * 100) + 1,
+            dueDate: currentDate,
+            priority: getRandomIntInclusive(0, 5)
+          }
+          tasks.push(task);
+        }
+      }
+      return tasks;
+    }
+
+    let tasksInfo = generateTasks();
+    console.log(tasksInfo)
+    tm = new TaskManager(tasksInfo, "taskManager", function(taskDetails) {
+      console.log("Task Info:", taskDetails.name + "/" + taskDetails.dueDate + "/" + taskDetails.priority);
+      const taskDetailsDiv= document.getElementById("taskDetailsDiv")
+      taskDetailsDiv.classList.remove("hidden");
+      taskDetailsDiv.innerHTML = `<h3>Task Details</h3>
+                                  <p>Name: ${taskDetails.name}</p>
+                                  <p>Due Date: ${taskDetails.dueDate}</p>
+                                  <p>Priority: ${taskDetails.priority}</p>`;
+    });
+    const currentDate = new Date();
+    tm.render(currentDate);
+
+    document.getElementById('prevWeekBtn').addEventListener('click', function() {
+      currentDate.setDate(currentDate.getDate() - 7);
+      tm.render(currentDate);
+    });
+
+    document.getElementById('nextWeekBtn').addEventListener('click', function() {
+      currentDate.setDate(currentDate.getDate() + 7);
+      tm.render(currentDate);
+    });
+  </script>
+</body>
+
+</html>
