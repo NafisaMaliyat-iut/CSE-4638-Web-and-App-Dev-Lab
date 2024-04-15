@@ -12,6 +12,7 @@ export default function ViewQuizPage({ params }) {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [questionTimes, setQuestionTimes] = useState({});
   const [score, setScore] = useState(0);
+  const [disabled, setDisabled] = useState(false)
 
   useEffect(() => {
     const fetchData = () => {
@@ -32,11 +33,13 @@ export default function ViewQuizPage({ params }) {
   useEffect(() => {
     if (timeRemaining === 0) {
       if (currentQuestionIndex < quiz?.questions.length - 1) {
-        goToNextQuestion();
+        // goToNextQuestion();
+        setDisabled(true)
       } else {
         setQuizCompleted(true);
       }
     } else {
+      setDisabled(false)
       const timer = setTimeout(() => {
         setTimeRemaining((time) => time - 1);
       }, 1000);
@@ -49,19 +52,34 @@ export default function ViewQuizPage({ params }) {
     const newQuestionTimes = { ...questionTimes };
     newQuestionTimes[currentQuestionIndex] = 60 - timeRemaining;
     setQuestionTimes(newQuestionTimes);
+
+    console.log(newQuestionTimes);
+
+    const nextIndex = currentQuestionIndex + 1;
+    const remainingTime = questionTimes[nextIndex];
+    if (remainingTime !== undefined) {
+      setTimeRemaining(60 - remainingTime);
+    } else {
+      setTimeRemaining(60);
+    }
+
     setCurrentQuestionIndex((index) => index + 1);
-    setTimeRemaining(60);
   };
 
   const goToPreviousQuestion = () => {
+    setCurrentQuestionIndex((index) => index - 1);
     const previousQuestionIndex = currentQuestionIndex - 1;
     const remainingTime = questionTimes[previousQuestionIndex];
 
+    const newQuestionTimes = { ...questionTimes };
+    newQuestionTimes[currentQuestionIndex] = 60 - timeRemaining;
+    setQuestionTimes(newQuestionTimes);
+
+    console.log(questionTimes);
+
     if (remainingTime !== undefined) {
-      setCurrentQuestionIndex(previousQuestionIndex);
       setTimeRemaining(60 - remainingTime);
     } else {
-      setCurrentQuestionIndex((index) => index - 1);
       setTimeRemaining(60);
     }
   };
@@ -131,21 +149,31 @@ export default function ViewQuizPage({ params }) {
             Question {currentQuestionIndex + 1}/{quiz?.questions.length}
           </h2>
           <p className="mb-4">{currentQuestion.prompt}</p>
-          <ul className="mb-4">
+          <div className="mb-4">
             {currentQuestion.options.map((option, index) => (
-              <li
-                key={index}
-                onClick={() => handleOptionSelect(index)}
-                className={`cursor-pointer ${
-                  selectedOptions[currentQuestionIndex] === index
-                    ? "font-bold text-blue-500"
-                    : "font-normal"
-                }`}
-              >
-                {option}
-              </li>
+              <label key={index} className="block cursor-pointer mb-2">
+                <input
+                  type="radio"
+                  name="options"
+                  value={index}
+                  checked={selectedOptions[currentQuestionIndex] === index}
+                  onChange={() => handleOptionSelect(index)}
+                  disabled={disabled}
+                  className="mr-2 cursor-pointer h-full"
+                />
+                <span
+                  className={`inline-block px-1 rounded-lg ${
+                    selectedOptions[currentQuestionIndex] === index
+                      ? "bg-blue-500 text-white font-bold"
+                      : "bg-gray-200 text-black"
+                  }`}
+                >
+                  {option}
+                </span>
+              </label>
             ))}
-          </ul>
+          </div>
+
           <p className="mb-2">Time Remaining: {timeRemaining} seconds</p>
           <div className="space-x-2 mb-4">
             <button
