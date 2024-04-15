@@ -7,11 +7,11 @@ export default function Create() {
   const router = useRouter();
   const [quizName, setQuizName] = useState("");
   const [questions, setQuestions] = useState([
-    { prompt: "", options: ["", "", ""], correctAnswer: 0 },
+    { prompt: "", options: ["", "", "",""], correctAnswer: 0 },
   ]);
 
   const handleAddQuestion = () => {
-    setQuestions([...questions, { prompt: "", options: ["", "", ""], correctAnswer: 0 }]);
+    setQuestions([...questions, { prompt: "", options: ["", "", "",""], correctAnswer: 0 }]);
   };
 
   const handleQuestionChange = (index, field, value) => {
