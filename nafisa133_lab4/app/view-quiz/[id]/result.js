@@ -58,7 +58,7 @@ export default function Result({score, quiz, selectedOptions, questionTimes }) {
                   ${optionIndex===question.correctAnswer? "font-semibold text-green-600":""}`
                 }                
                 >
-                  {option}
+                  {optionIndex+1}. {option}
                 </li>
               ))}
             </ul>
