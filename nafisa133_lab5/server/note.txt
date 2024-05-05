@@ -1,0 +1,1 @@
+This server folder is not used as the backend is developed in nextjs
