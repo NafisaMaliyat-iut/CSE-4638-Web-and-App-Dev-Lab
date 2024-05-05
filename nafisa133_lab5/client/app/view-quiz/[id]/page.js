@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Result from "../../../components/result";
-import QuizContent from "@/components/quiz";
 import { apiUrl } from "@/app/urls";
 
 export default function ViewQuizPage({ params }) {
@@ -114,20 +113,6 @@ export default function ViewQuizPage({ params }) {
       return acc;
     }, 0);
     setScore(calculatedScore);
-
-    // let history = JSON.parse(localStorage.getItem("history")) || [];
-
-    // const existingIndex = history.findIndex((item) => item.id === id);
-    // if (existingIndex !== -1) {
-    //   history.splice(existingIndex, 1);
-    // }
-    // const quizResult = {
-    //   id: id,
-    //   score: `${calculatedScore}/${quiz.questions.length}`,
-    // };
-    // history.push(quizResult);
-    // localStorage.setItem("history", JSON.stringify(history));
-
     try{
       const res = await fetch(apiUrl + "history", {
         method: "POST",
