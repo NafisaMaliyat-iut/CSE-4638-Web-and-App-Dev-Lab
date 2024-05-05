@@ -10,8 +10,8 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 2;
   const [maxFetchedPage, setMaxFetchedPage] = useState(-2); // only set to 1 when data for that page has been rendered
-  const [maxPossiblePageNumber,setMaxPossiblePageNumber] = useState(1)
-  const [loading,setLoading]=useState(false)
+  const [maxPossiblePageNumber, setMaxPossiblePageNumber] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const fetchQuizzes = async (page, limit) => {
     try {
@@ -55,7 +55,7 @@ export default function Home() {
 
   useEffect(() => {
     const fetchQuizzesData = async () => {
-      setLoading(true)
+      setLoading(true);
       const fetchPages = [];
       for (let i = currentPage - 2; i < currentPage; i++) {
         if (i > 0) {
@@ -74,10 +74,10 @@ export default function Home() {
         })
       );
       const allQuizzes = fetchedQuizzes.flat();
-      console.log("number of quizzes fetched: ",allQuizzes.length)
+      console.log("number of quizzes fetched: ", allQuizzes.length);
       setQuizzes(allQuizzes);
       setMaxFetchedPage(currentPage);
-      setLoading(false)
+      setLoading(false);
     };
 
     if (currentPage < maxFetchedPage - 2 || currentPage > maxFetchedPage + 2) {
@@ -91,10 +91,10 @@ export default function Home() {
       setHistory(history);
     };
 
-    const fetchQuizCountData = async () =>{
-      const {count } = await fetchQuizCount();
-      setMaxPossiblePageNumber(count/limit);
-    }
+    const fetchQuizCountData = async () => {
+      const { count } = await fetchQuizCount();
+      setMaxPossiblePageNumber(count / limit);
+    };
 
     fetchHistoryData();
     fetchQuizCountData();
@@ -115,7 +115,7 @@ export default function Home() {
       ) : (
         quizzes.map((quiz, index) => {
           const { quizName, page } = quiz;
-  
+
           // Check if the quiz is for the current page
           if (page === currentPage) {
             const { _id } = quiz;
@@ -123,7 +123,7 @@ export default function Home() {
             const isCompleted = historyItem !== undefined;
             const bgClass = isCompleted ? "bg-green-200" : "bg-white";
             const latestScore = isCompleted ? historyItem.latestScore : null;
-  
+
             return (
               <div key={index} className={`shadow-md rounded-lg p-6 w-full ${bgClass}`}>
                 <h2 className="text-xl font-semibold">{quizName}</h2>
@@ -149,6 +149,17 @@ export default function Home() {
         >
           Previous
         </button>
+        {[...Array(maxPossiblePageNumber)].map((_, pageNumber) => (
+          <button
+            key={pageNumber + 1}
+            onClick={() => setCurrentPage(pageNumber + 1)}
+            className={`px-4 py-2 bg-gray-300 text-gray-700 rounded mx-2 ${
+              pageNumber + 1 === currentPage ? "bg-blue-500 text-white" : ""
+            }`}
+          >
+            {pageNumber + 1}
+          </button>
+        ))}
         <button
           onClick={handleNextPage}
           disabled={currentPage === maxPossiblePageNumber}
@@ -158,5 +169,5 @@ export default function Home() {
         </button>
       </div>
     </main>
-  );  
+  );
 }
